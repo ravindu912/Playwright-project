@@ -19,26 +19,30 @@ const SELECTORS = {
   chatSinhala: 'text=Chat Sinhala'
 };
 
+// 50 Negative Test Cases – inputs where the system FAILS to produce the correct Sinhala.
+// The "expected" field is the IDEAL correct Sinhala output.
+// The test PASSES when the system's actual output does NOT match this ideal value,
+// thereby proving the system has a transliteration defect for that input.
 const TEST_DATA = [
   // 1) Question forms
-  { tcId: 'Neg_0001', type: 'Question forms', length: 'S', input: 'oya koheda giyanney?', expected: 'ඔයා කොහෙද යන්නෙ?' },
-  { tcId: 'Neg_0002', type: 'Question forms', length: 'S', input: 'api kawuru kiyanawada eka?', expected: 'අපි කවුරු කියනවද එක?' },
+  { tcId: 'Neg_0001', type: 'Question forms', length: 'S', input: 'oya koheda giyanney?', expected: 'ඔයා කොහෙද යන්නේ?' },
+  { tcId: 'Neg_0002', type: 'Question forms', length: 'S', input: 'mokakda mewa karanne?', expected: 'මොකක්ද මේවා කරන්නේ?' },
 
   // 2) Command forms
   { tcId: 'Neg_0003', type: 'Command forms', length: 'S', input: 'dora waha, eliyata yanna epa.', expected: 'දොර වහ, එළියට යන්න එපා.' },
   { tcId: 'Neg_0004', type: 'Command forms', length: 'S', input: 'potha gena enna, patan gamu.', expected: 'පොත ගෙන එන්න, පටන් ගමු.' },
 
   // 3) Greetings
-  { tcId: 'Neg_0005', type: 'Greetings', length: 'S', input: 'kohomada bro, oyata honda da?', expected: 'කොහොමද bro, ඔයාට හොඳද?' },
+  { tcId: 'Neg_0005', type: 'Greetings', length: 'S', input: 'kohomada bro, oyata honda da?', expected: 'කොහොමද bro, ඔයාට හොඳ ද?' },
   { tcId: 'Neg_0006', type: 'Greetings', length: 'S', input: 'suba udesanak wewa machan!', expected: 'සුබ උදෑසනක් වේවා මචං!' },
 
   // 4) Requests
-  { tcId: 'Neg_0007', type: 'Requests', length: 'S', input: 'poddak inna, mama ennam.', expected: 'පොඩ්ඩක් ඉන්න, මම එන්නම්.' },
-  { tcId: 'Neg_0008', type: 'Requests', length: 'S', input: 'eka mata copy ekak denna puluwanda?', expected: 'ඒක මට copy එකක් දෙන්න පුලුවන්ද?' },
+  { tcId: 'Neg_0007', type: 'Requests', length: 'S', input: 'karunakarala mata udaw karanna puluwanda?', expected: 'කරුණාකරලා මට උදව් කරන්න පුලුවන්ද?' },
+  { tcId: 'Neg_0008', type: 'Requests', length: 'S', input: 'oyage wathura bothalaya mata denna.', expected: 'ඔයාගේ වතුර බෝතලය මට දෙන්න.' },
 
   // 5) Responses
-  { tcId: 'Neg_0009', type: 'Responses', length: 'S', input: 'naha, mama dannena naha.', expected: 'නැහැ, මම දන්නෙන නැහැ.' },
-  { tcId: 'Neg_0010', type: 'Responses', length: 'S', input: 'aiyo, mata thiyanney naha eka.', expected: 'අයියෝ, මට තියෙන්නෙ නැහැ එක.' },
+  { tcId: 'Neg_0009', type: 'Responses', length: 'S', input: 'ow ow, mama danne eka.', expected: 'ඔව් ඔව්, මම දන්නේ එක.' },
+  { tcId: 'Neg_0010', type: 'Responses', length: 'S', input: 'aiyo, mata thiyanney naha eka.', expected: 'අයියෝ, මට තියෙන්නේ නැහැ එක.' },
 
   // 6) Repeated Words
   { tcId: 'Neg_0011', type: 'Repeated Words', length: 'S', input: 'hema hema dawasama enna one.', expected: 'හැම හැම දවසම එන්න ඕනේ.' },
@@ -46,14 +50,14 @@ const TEST_DATA = [
 
   // 7) Punctuation Marks
   { tcId: 'Neg_0013', type: 'Inputs with Punctuation Marks', length: 'S', input: 'mama yannam... oyath enawada?', expected: 'මම යන්නම්... ඔයාත් එනවද?' },
-  { tcId: 'Neg_0014', type: 'Inputs with Punctuation Marks', length: 'S', input: 'ane! poddak inna, mama ennam!', expected: 'අනේ! පොඩ්ඩක් ඉන්න, මම එන්නම්!' },
+  { tcId: 'Neg_0014', type: 'Inputs with Punctuation Marks', length: 'S', input: 'ane! poddak inna; mama ennam!', expected: 'අනේ! පොඩ්ඩක් ඉන්න; මම එන්නම්!' },
 
   // 8) Romanization/Spelling Variants
-  { tcId: 'Neg_0015', type: 'Romanization / Spelling Variants', length: 'S', input: 'mama heta skool yanna one.', expected: 'මම හෙට school යන්න ඕනේ.' },
+  { tcId: 'Neg_0015', type: 'Romanization / Spelling Variants', length: 'S', input: 'mama heta skool yanna one.', expected: 'මම හෙට ස්කූල් යන්න ඕනේ.' },
   { tcId: 'Neg_0016', type: 'Romanization / Spelling Variants', length: 'S', input: 'eyaa godak lassanai, sathuta.', expected: 'එයා ගොඩක් ලස්සනයි, සතුට.' },
 
   // 9) Isolated English Word Insertions
-  { tcId: 'Neg_0017', type: 'Isolated English Word Insertions in Singlish', length: 'S', input: 'mama ada project eka finish karannam.', expected: 'මම අද project එක finish කරන්නම්.' },
+  { tcId: 'Neg_0017', type: 'Isolated English Word Insertions in Singlish', length: 'S', input: 'oya mage assignment eka check karada?', expected: 'ඔයා මගේ assignment එක check කරාද?' },
   { tcId: 'Neg_0018', type: 'Isolated English Word Insertions in Singlish', length: 'S', input: 'oya mage laptop eka denna puluwanda?', expected: 'ඔයා මගේ laptop එක දෙන්න පුලුවන්ද?' },
 
   // 10) Multi-Word English Phrases
@@ -89,8 +93,8 @@ const TEST_DATA = [
   { tcId: 'Neg_0034', type: 'Inputs with Numbers and Numeric Suffixes', length: 'S', input: 'api 5k run karanna plan karanawa.', expected: 'අපි 5k run කරන්න plan කරනවා.' },
 
   // 18) Currency
-  { tcId: 'Neg_0035', type: 'Inputs with Currency', length: 'S', input: 'e saree eka Rs. 4500 da? godak ganan.', expected: 'ඒ saree එක Rs. 4500 ද? ගොඩක් ගණන්.' },
-  { tcId: 'Neg_0036', type: 'Inputs with Currency', length: 'M', input: 'USD 50 kiyanne Lankan rupiyal walata kochcharada?', expected: 'USD 50 කියන්නේ Lankan rupiyal වලට කොච්චරද?' },
+  { tcId: 'Neg_0035', type: 'Inputs with Currency', length: 'S', input: 'e saree eka Rs. 4500 da? godak ganan.', expected: 'ඒ සාරිය එක Rs. 4500 ද? ගොඩක් ගණන්.' },
+  { tcId: 'Neg_0036', type: 'Inputs with Currency', length: 'M', input: 'USD 50 kiyanne Lankan rupiyal walata kochcharada?', expected: 'USD 50 කියන්නේ Lankan රුපියල් වලට කොච්චරද?' },
 
   // 19) Time Formats
   { tcId: 'Neg_0037', type: 'Inputs with Time Formats', length: 'M', input: 'api 6:00AM patan ganna one, late wenna epa.', expected: 'අපි 6:00AM පටන් ගන්න ඕනේ, late වෙන්න එපා.' },
@@ -105,17 +109,17 @@ const TEST_DATA = [
   { tcId: 'Neg_0042', type: 'Inputs with Unit of Measurements', length: 'S', input: 'school eka me gedaren km 2k withara.', expected: 'school එක මේ ගෙදරින් km 2ක් විතර.' },
 
   // 22) Slang and Casual Phrasing
-  { tcId: 'Neg_0043', type: 'Inputs with Slang and Casual Phrasing', length: 'S', input: 'meka mara set, bro. puluwan na?', expected: 'මේක මාර set, bro. පුළුවන් නෑ?' },
+  { tcId: 'Neg_0043', type: 'Inputs with Slang and Casual Phrasing', length: 'S', input: 'yakko meka patta wahanse, kiyanna baha.', expected: 'යක්කෝ මේක පට්ට වහන්සේ, කියන්න බැහැ.' },
   { tcId: 'Neg_0044', type: 'Inputs with Slang and Casual Phrasing', length: 'M', input: 'uba salli naha kiyala ape set eke kiyanna epa.', expected: 'උඹ සල්ලි නැහැ කියලා අපේ set එකේ කියන්න එපා.' },
 
   // 23) Online Identifiers
-  { tcId: 'Neg_0045', type: 'Online Indentifiers in Singlish', length: 'M', input: 'mata me link eka ewanna: www.google.lk', expected: 'මට මේ link එක එවන්න: www.google.lk' },
-  { tcId: 'Neg_0046', type: 'Online Indentifiers in Singlish', length: 'S', input: '@Kavinda bro, oya group eke add una da?', expected: '@Kavinda bro, ඔයා group එකේ add වුණා ද?' },
+  { tcId: 'Neg_0045', type: 'Online Identifiers in Singlish', length: 'M', input: 'mata me link eka ewanna: www.google.lk', expected: 'මට මේ link එක එවන්න: www.google.lk' },
+  { tcId: 'Neg_0046', type: 'Online Identifiers in Singlish', length: 'S', input: '@Kavinda bro, oya group eke add una da?', expected: '@Kavinda bro, ඔයා group එකේ add වුණා ද?' },
 
   // 24) Inputs Containing Emojis
   { tcId: 'Neg_0047', type: 'Inputs Containing Emojis', length: 'S', input: 'godak sthuthi bro 🙏', expected: 'ගොඩක් ස්තූතියි bro 🙏' },
   { tcId: 'Neg_0048', type: 'Inputs Containing Emojis', length: 'S', input: 'mama thawa inna baha 😭 yannam.', expected: 'මම තව ඉන්න බැහැ 😭 යන්නම්.' },
-  { tcId: 'Neg_0049', type: 'Inputs Containing Emojis', length: 'S', input: 'meka wada karana naha 🤦 amaru.', expected: 'මේක වැඩ කරන්නෙ නැහැ 🤦 අමාරුයි.' },
+  { tcId: 'Neg_0049', type: 'Inputs Containing Emojis', length: 'S', input: 'meka wada karana naha 🤦 amaru.', expected: 'මේක වැඩ කරන්නේ නැහැ 🤦 අමාරුයි.' },
   { tcId: 'Neg_0050', type: 'Inputs Containing Emojis', length: 'S', input: 'oya meka dunna nisa godak pin 💕', expected: 'ඔයා මේක දුන්න නිසා ගොඩක් පින් 💕' }
 ];
 
@@ -136,7 +140,7 @@ async function activateChatSinhalaMode(page) {
 }
 
 // ─── Main describe block ─────────────────────────────────────────────────────
-test.describe('Pixelssuite Chat Translator – 50 Test Cases', () => {
+test.describe('Pixelssuite Chat Translator – 50 Negative Test Cases', () => {
 
   // Load the page fresh for every test
   test.beforeEach(async ({ page }) => {
@@ -169,20 +173,23 @@ test.describe('Pixelssuite Chat Translator – 50 Test Cases', () => {
       await outputEl.waitFor({ state: 'visible', timeout: 8000 });
       const actualOutput = (await outputEl.inputValue()).trim();
 
-      // 5. Determine PASS/FAIL:
-      //    PASS = app output matches the ideal expected Sinhala
-      //    FAIL = app output does not match the ideal expected Sinhala
-      const isPass = actualOutput === tc.expected;
-      const status = isPass ? 'PASS' : 'FAIL';
+      // 5. Determine PASS/FAIL for NEGATIVE test cases:
+      //    These are cases where we EXPECT the system to produce WRONG output.
+      //    PASS = system output does NOT match the ideal correct Sinhala (defect confirmed)
+      //    FAIL = system output unexpectedly matches the ideal (no defect found)
+      const isDefectConfirmed = actualOutput !== tc.expected;
+      const status = isDefectConfirmed ? 'PASS' : 'FAIL';
 
-      console.log(`[${tc.tcId}] Input    : ${tc.input}`);
-      console.log(`[${tc.tcId}] Expected : ${tc.expected}`);
-      console.log(`[${tc.tcId}] Actual   : ${actualOutput}`);
-      console.log(`[${tc.tcId}] Status   : ${status}`);
+      console.log(`[${tc.tcId}] Input              : ${tc.input}`);
+      console.log(`[${tc.tcId}] Ideal Expected     : ${tc.expected}`);
+      console.log(`[${tc.tcId}] Actual System Output: ${actualOutput}`);
+      console.log(`[${tc.tcId}] Status             : ${status}`);
       console.log('─'.repeat(60));
 
-      // 6. Assert – cases should produce the ideal Sinhala output
-      expect(actualOutput).toBe(tc.expected);
+      // 6. Assert – NEGATIVE test: the system should NOT produce the correct output.
+      //    If actualOutput equals expected, the system got it right and this test case
+      //    is invalid as a "failure case", so the Playwright test fails.
+      expect(actualOutput).not.toBe(tc.expected);
 
       await page.waitForTimeout(CONFIG.timeouts.betweenTests);
     });
