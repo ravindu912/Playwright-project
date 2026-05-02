@@ -3,20 +3,20 @@ import { test, expect } from '@playwright/test';
 const CONFIG = {
   url: 'https://www.pixelssuite.com/chat-translator',
   timeouts: {
-    pageLoad:      5000,
-    translation:   4000,
-    betweenTests:  500
+    pageLoad: 5000,
+    translation: 4000,
+    betweenTests: 500
   }
 };
 
 // Selectors confirmed by manual inspection of pixelssuite.com/chat-translator
 const SELECTORS = {
-  input:       'textarea[placeholder*="English"]',
-  output:      'textarea[placeholder*="Sinhala"]',
-  translateBtn:'button.btn',
+  input: 'textarea[placeholder*="English"]',
+  output: 'textarea[placeholder*="Sinhala"]',
+  translateBtn: 'button.btn',
   // "Chat Sinhala" mode is under the Transliteration dropdown in the nav
   modeDropdown: 'text=Transliteration',
-  chatSinhala:  'text=Chat Sinhala'
+  chatSinhala: 'text=Chat Sinhala'
 };
 
 const TEST_DATA = [
