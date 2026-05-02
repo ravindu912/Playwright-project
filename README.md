@@ -1,15 +1,45 @@
-# 🧪 Swift Translator Test Suite
+# 🧪 Pixelssuite Chat Translator – Transliteration Accuracy Testing
 
-Automated testing suite for [SwiftTranslator.com](https://www.swifttranslator.com/) - Singlish to Sinhala translation validation.
+Automated Playwright test suite for evaluating the **Chat Sinhala** transliteration accuracy of [Pixelssuite Chat Translator](https://www.pixelssuite.com/chat-translator).
+
+## 📋 Assignment Objective
+
+Assess how accurately the Pixelssuite Chat Translator converts **chat-style Singlish** (informal romanized Sinhala) input into correct **Sinhala script** output. This suite contains **50 negative test cases** — inputs where the system **fails** to produce the correct Sinhala transliteration.
 
 ## 📊 Test Coverage
 
 | Test Type | Count | Description |
 |-----------|-------|-------------|
-| ✅ Positive Functional | 24 | Valid inputs that should translate correctly |
-| ❌ Negative Functional | 10 | Edge cases and error scenarios |
-| 🎨 UI Tests | 1 | Real-time translation functionality |
-| **Total** | **35** | Complete test coverage |
+| ❌ Negative Functional | **50** | Inputs where the system fails to produce correct Sinhala |
+
+### Singlish Input Categories (24 types, 2+ test cases each)
+
+| # | Category | Test Case IDs |
+|---|----------|---------------|
+| 1 | Question Forms | Neg_0001, Neg_0002 |
+| 2 | Command Forms | Neg_0003, Neg_0004 |
+| 3 | Greetings | Neg_0005, Neg_0006 |
+| 4 | Requests | Neg_0007, Neg_0008 |
+| 5 | Responses | Neg_0009, Neg_0010 |
+| 6 | Repeated Words | Neg_0011, Neg_0012 |
+| 7 | Inputs with Punctuation Marks | Neg_0013, Neg_0014 |
+| 8 | Romanization / Spelling Variants | Neg_0015, Neg_0016 |
+| 9 | Isolated English Word Insertions in Singlish | Neg_0017, Neg_0018 |
+| 10 | Multi-Word English Phrases in Singlish | Neg_0019, Neg_0020 |
+| 11 | English Digital Terms in Singlish | Neg_0021, Neg_0022 |
+| 12 | Platform/App Names in Singlish | Neg_0023, Neg_0024 |
+| 13 | English Abbreviations/Acronyms in Singlish | Neg_0025, Neg_0026 |
+| 14 | English Clipped Forms in Singlish | Neg_0027, Neg_0028 |
+| 15 | Place Names Embedded in Singlish | Neg_0029, Neg_0030 |
+| 16 | Person Names Embedded in Singlish | Neg_0031, Neg_0032 |
+| 17 | Inputs with Numbers and Numeric Suffixes | Neg_0033, Neg_0034 |
+| 18 | Inputs with Currency | Neg_0035, Neg_0036 |
+| 19 | Inputs with Time Formats | Neg_0037, Neg_0038 |
+| 20 | Inputs with Dates | Neg_0039, Neg_0040 |
+| 21 | Inputs with Unit of Measurements | Neg_0041, Neg_0042 |
+| 22 | Inputs with Slang and Casual Phrasing | Neg_0043, Neg_0044 |
+| 23 | Online Identifiers in Singlish | Neg_0045, Neg_0046 |
+| 24 | Inputs Containing Emojis | Neg_0047 – Neg_0050 |
 
 ---
 
@@ -20,99 +50,91 @@ Download and install from: https://nodejs.org/ (LTS version)
 
 ### 2️⃣ Set Up Project
 ```bash
-# Create project folder
-mkdir swift-translator-tests
-cd swift-translator-tests
+# Clone the repository
+git clone <repository-url>
+cd Playwright-project
 
-# Initialize project
-npm init -y
+# Install dependencies
+npm install
 
-# Install Playwright
-npm install -D @playwright/test
+# Install Playwright browsers
 npx playwright install
 ```
 
-### 3️⃣ Add Files
-Create this folder structure:
+### 3️⃣ Project Structure
 ```
-swift-translator-tests/
+Playwright-project/
 ├── tests/
-│   └── complete-swift-translator-tests.spec.js
+│   ├── swift.spec.js            # 50 negative test cases
+│   ├── playwright.config.js     # Playwright configuration
+│   └── playwright-report/       # HTML test report (auto-generated)
 ├── package.json
-└── playwright.config.js
+├── IT23202986.txt
+├── It23202986.xlsx              # Test case documentation (Excel)
+└── README.md
 ```
 
 ### 4️⃣ Run Tests
 ```bash
-# Run all tests with visible browser
-npm run test:headed
+# Run all 50 tests (headless)
+npx playwright test tests/swift.spec.js --config=tests/playwright.config.js
 
-# Or use the full command
-npx playwright test --headed
+# Run with visible browser
+npx playwright test tests/swift.spec.js --config=tests/playwright.config.js --headed
+
+# Run on Chromium only (faster)
+npx playwright test tests/swift.spec.js --config=tests/playwright.config.js --project=chromium
 ```
 
 ---
 
-## 📝 Test Categories
+## 🔍 How the Tests Work
 
-### Positive Functional Tests (24)
+### Test Logic (Negative Testing)
 
-Tests that validate correct translation behavior:
+Each test case represents an input where the Chat Sinhala transliterator **fails** to produce the correct output.
 
-1. **Basic Sentences**
-   - Simple present tense
-   - Compound sentences
-   - Complex sentences with conditions
+```
+1. Navigate to https://www.pixelssuite.com/chat-translator
+2. Activate "Chat Sinhala" mode via Transliteration dropdown
+3. Enter a Singlish input into the textarea
+4. Click the "Transliterate" button
+5. Read the system's actual output
+6. Compare actual output with the ideal correct Sinhala
+7. Assert: actual output ≠ expected correct Sinhala (system fails = test PASSES)
+```
 
-2. **Question Forms**
-   - Interrogative questions
-   - Polite requests
+### Pass/Fail Criteria
 
-3. **Commands**
-   - Imperative commands
-   - Direct instructions
+| Scenario | Playwright Test Result | Meaning |
+|----------|----------------------|---------|
+| System output ≠ ideal correct Sinhala | ✅ **PASS** | Defect confirmed — system fails on this input |
+| System output = ideal correct Sinhala | ❌ **FAIL** | No defect — system got it right (not a valid negative case) |
 
-4. **Tenses**
-   - Past tense
-   - Present tense
-   - Future tense
+---
 
-5. **Special Cases**
-   - Greetings
-   - Negations
-   - Plural pronouns
-   - Mixed Singlish + English
-   - Technical terms
-   - Place names
-   - Currency formats
-   - Punctuation
-   - Slang expressions
+## 📝 Sample Test Cases
 
-### Negative Functional Tests (10)
+### Neg_0001: Question Form
+- **Input:** `oya koheda giyanney?`
+- **Ideal Expected:** `ඔයා කොහෙද ගියා නේ?`
+- **Category:** Question Forms
+- **Length:** Short (S)
+- **Result:** System produces incorrect transliteration → PASS
 
-Tests that validate error handling:
+### Neg_0015: Romanization Variant
+- **Input:** `mama heta skool yanna one.`
+- **Ideal Expected:** `මම හෙට ස්කූල් යන්න ඕනේ.`
+- **Category:** Romanization / Spelling Variants
+- **Length:** Short (S)
+- **Result:** System fails to handle informal spelling "skool" → PASS
 
-1. **Formatting Issues**
-   - Joined words (no spaces)
-   - Multiple spaces
-   - Line breaks
-
-2. **Input Errors**
-   - Misspelled words
-   - Ambiguous words
-   - Complex nested clauses
-
-3. **Edge Cases**
-   - Unusual punctuation
-   - Heavy slang with English
-   - Date formats
-   - Excessive repetition
-   - Mixed case abbreviations
-
-### UI Tests (1)
-
-Tests for user interface functionality:
-- Real-time translation updates
+### Neg_0047: Emoji Input
+- **Input:** `godak sthuthi bro 🙏`
+- **Ideal Expected:** `ගොඩක් ස්තූතියි bro 🙏`
+- **Category:** Inputs Containing Emojis
+- **Length:** Short (S)
+- **Result:** System fails to correctly transliterate alongside emojis → PASS
 
 ---
 
@@ -122,80 +144,37 @@ Tests for user interface functionality:
 
 ```bash
 # Run all tests (headless)
-npx playwright test
+npx playwright test tests/swift.spec.js --config=tests/playwright.config.js
 
 # Run with visible browser
-npx playwright test --headed
+npx playwright test tests/swift.spec.js --config=tests/playwright.config.js --headed
 
 # Debug mode
-npx playwright test --debug
+npx playwright test tests/swift.spec.js --config=tests/playwright.config.js --debug
 
 # Interactive UI mode
-npx playwright test --ui
-```
-
-### Run Specific Test Groups
-
-```bash
-# Only positive tests
-npm run test:positive
-
-# Only negative tests
-npm run test:negative
-
-# Only UI tests
-npm run test:ui-tests
+npx playwright test tests/swift.spec.js --config=tests/playwright.config.js --ui
 ```
 
 ### Run Individual Tests
 
 ```bash
-# Run one specific test
-npx playwright test --grep "Pos_Fun_0001"
+# Run one specific test case
+npx playwright test --config=tests/playwright.config.js --grep "Neg_0001"
 
-# Run tests matching a pattern
-npx playwright test --grep "greeting"
+# Run tests matching a category
+npx playwright test --config=tests/playwright.config.js --grep "Question forms"
 ```
 
 ### View Reports
 
 ```bash
-# Generate and open HTML report
-npm run report
+# Open the HTML report
+npx playwright show-report tests/playwright-report
 
-# Or
-npx playwright show-report
+# Or open the file directly in your browser
+# tests/playwright-report/index.html
 ```
-
----
-
-## 📖 Test Details
-
-### Sample Test Cases
-
-#### Pos_Fun_0001: Simple Present Tense
-- **Input:** `mama akkalage gedhara yanawa`
-- **Expected:** `මම අක්කලගෙ ගෙදර යනව`
-- **Category:** Daily language usage
-- **Length:** Short (S)
-
-#### Pos_Fun_0004: Interrogative Question
-- **Input:** `oyaata kohomadha?`
-- **Expected:** `ඔයාට කොහොමද?`
-- **Category:** Greeting/question
-- **Length:** Short (S)
-
-#### Pos_Fun_0016: Mixed Language
-- **Input:** `adha office eeke zoom meeting ekak thiyennee`
-- **Expected:** `අද office ඒකෙ zoom meeting එකක් තියෙන්නේ`
-- **Category:** Mixed Singlish + English
-- **Length:** Medium (M)
-
-#### Neg_Fun_0001: Joined Words Error
-- **Input:** `mamagedharayanavaa` (no spaces)
-- **Expected:** `මම ගෙදර යනවා`
-- **Category:** Typographical error handling
-- **Length:** Short (S)
 
 ---
 
@@ -203,30 +182,30 @@ npx playwright show-report
 
 ### Terminal Output
 ```
-Running 35 tests using 1 worker
+Running 50 tests using 1 worker
 
-  ✓ Pos_Fun_0001 - Convert simple present tense sentence (4.2s)
-  ✓ Pos_Fun_0002 - Convert compound sentence with cause (5.1s)
-  ✗ Pos_Fun_0003 - Convert complex sentence with condition (3.8s)
+  ✓ Neg_0001 | Question forms (S) – "oya koheda giyanney?" (12.5s)
+  ✓ Neg_0002 | Question forms (S) – "mokatei mewa karanne?" (11.8s)
   ...
 
-32 passed (2m 45s)
-3 failed
+50 passed (10m 30s)
 ```
 
-### What the Results Mean
-
-- ✓ **Passed:** Translation matched expected output exactly
-- ✗ **Failed:** Translation differed from expected output
-
-**Note:** Failed tests aren't necessarily "bad" - they show areas where the translator needs improvement!
+### Console Log for Each Test
+```
+[Neg_0001] Input              : oya koheda giyanney?
+[Neg_0001] Ideal Expected     : ඔයා කොහෙද ගියා නේ?
+[Neg_0001] Actual System Output: ඔයා කොහෙද ගියන්නෑ?
+[Neg_0001] Status             : PASS
+────────────────────────────────────────────────────────────────
+```
 
 ### HTML Report
 
-The HTML report shows:
-- Detailed test results
-- Screenshots of failures
-- Expected vs. actual outputs
+The HTML report (at `tests/playwright-report/index.html`) shows:
+- Detailed test results for all 50 cases
+- Expected vs. actual output comparison
+- Screenshots of any failures
 - Test execution timeline
 - Filterable by status (passed/failed)
 
@@ -234,141 +213,64 @@ The HTML report shows:
 
 ## 🛠️ Configuration
 
-### playwright.config.js
-
-Key settings you can adjust:
-
-```javascript
-{
-  timeout: 60000,           // Max test duration (60 seconds)
-  workers: 1,               // Run tests sequentially
-  headless: false,          // Show browser (true = hide)
-  screenshot: 'only-on-failure',  // When to capture screenshots
-  video: 'retain-on-failure',     // When to record video
-}
-```
-
-### Customizing Timeouts
-
-In the test file (`complete-swift-translator-tests.spec.js`):
+### Timeouts (in swift.spec.js)
 
 ```javascript
 const CONFIG = {
   timeouts: {
-    pageLoad: 2000,        // Wait after page loads
-    afterClear: 1000,      // Wait after clearing input
-    translation: 3000,     // Wait for translation
-    betweenTests: 2000,    // Wait between tests
+    pageLoad: 5000,       // Wait after page loads (ms)
+    translation: 4000,    // Wait for transliteration result (ms)
+    betweenTests: 500     // Wait between tests (ms)
   }
 };
 ```
 
----
+### Playwright Config (tests/playwright.config.js)
 
-## 📋 For Your Assignment
-
-### Steps to Document Results
-
-1. **Run all tests:**
-   ```bash
-   npx playwright test --headed
-   ```
-
-2. **Generate report:**
-   ```bash
-   npx playwright show-report
-   ```
-
-3. **Take screenshots:**
-   - Overall results summary
-   - Each failed test detail
-   - Sample passed tests
-
-4. **Update Excel file:**
-   - Column F: Copy actual outputs from failed tests
-   - Column G: Mark Pass/Fail status
-   - Column H: Document the issue/difference
-
-5. **Analyze results:**
-   - Count pass/fail
-   - Identify patterns in failures
-   - Note which categories work best
-   - Document improvement suggestions
+Key settings:
+- **testDir:** `./` (tests directory)
+- **fullyParallel:** `true`
+- **reporter:** `html` (generates HTML report)
+- **browsers:** Chromium, Firefox, WebKit
 
 ---
 
 ## 🐛 Troubleshooting
 
-### Common Issues
-
 | Issue | Solution |
 |-------|----------|
-| `npm: command not found` | Install Node.js |
-| `ENOENT: no such file` | Make sure you're in the right directory |
-| All tests timeout | Check internet connection |
-| Tests very slow | Normal - includes wait times for stability |
-| Browser won't open | Try `--headed` flag or check browser installation |
-
-### Getting More Information
-
-```bash
-# Verbose output
-npx playwright test --reporter=list --reporter=html
-
-# Slow down execution to watch
-# Edit playwright.config.js and add: slowMo: 500
-
-# Run single test with debug
-npx playwright test --grep "Pos_Fun_0001" --debug
-```
+| `npm: command not found` | Install Node.js from https://nodejs.org/ |
+| Tests timeout | Check internet connection; increase `translation` timeout |
+| Report not opening | Use `npx playwright show-report tests/playwright-report` |
+| Browser won't open | Run `npx playwright install` to install browsers |
+| Tests very slow | Normal — each test navigates to the site and waits for translation |
+| All tests FAIL | System may be producing correct output; test cases need updating |
 
 ---
 
 ## 📚 Resources
 
 - **Playwright Docs:** https://playwright.dev/
-- **Swift Translator:** https://www.swifttranslator.com/
+- **Pixelssuite Chat Translator:** https://www.pixelssuite.com/chat-translator
 - **Node.js:** https://nodejs.org/
 - **Test Best Practices:** https://playwright.dev/docs/best-practices
 
 ---
 
-## ✅ Success Checklist
+## ✅ Checklist
 
-- [ ] Node.js installed (v16 or higher)
-- [ ] Project folder created
-- [ ] Playwright installed
-- [ ] Browsers installed (`npx playwright install`)
-- [ ] Test file in `tests/` folder
-- [ ] Config file in project root
-- [ ] Tests run successfully
+- [x] Node.js installed (v16 or higher)
+- [x] Playwright installed with browsers
+- [x] 50 negative test cases covering all 24 Singlish input types
+- [x] Test file: `tests/swift.spec.js`
+- [x] Config file: `tests/playwright.config.js`
+- [ ] Tests run successfully (all 50 pass)
 - [ ] HTML report generated
-- [ ] Results documented
+- [ ] Excel file (It23202986.xlsx) updated with results
+- [ ] Results analyzed and documented
 
 ---
 
-## 🎓 Tips for Testing
-
-1. **Run tests multiple times** - Network conditions can affect results
-2. **Use headed mode** when learning - you can see what's happening
-3. **Debug individual tests** - Easier to understand failures
-4. **Check the HTML report** - Visual representation of results
-5. **Document unexpected behaviors** - These are valuable findings!
-
----
-
-## 📞 Need Help?
-
-If you encounter issues:
-
-1. Check this README
-2. Look at the COMPLETE_SETUP_GUIDE.md
-3. Use the QUICK_START_CHEAT_SHEET.md
-4. Run tests in debug mode: `npx playwright test --debug`
-
----
-
-**Happy Testing! 🚀**
-
-Total Test Coverage: 35 tests across all categories
-Estimated Run Time: 3-5 minutes for full suite
+**Student ID:** IT23202986  
+**Test Suite:** 50 Negative Test Cases  
+**Estimated Run Time:** 8–12 minutes for full suite  
