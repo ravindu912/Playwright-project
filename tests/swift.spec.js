@@ -25,11 +25,11 @@ const SELECTORS = {
 // thereby proving the system has a transliteration defect for that input.
 const TEST_DATA = [
   // 1) Question forms
-  { tcId: 'Neg_0001', type: 'Question forms', length: 'S', input: 'oya koheda giyanney?', expected: 'ඔයා කොහෙද යන්නේ?' },
-  { tcId: 'Neg_0002', type: 'Question forms', length: 'S', input: 'mokakda mewa karanne?', expected: 'මොකක්ද මේවා කරන්නේ?' },
+  { tcId: 'Neg_0001', type: 'Question forms', length: 'S', input: 'oya koheda giyanney?', expected: 'ඔයා කොහෙද ගියා නේ?' },
+  { tcId: 'Neg_0002', type: 'Question forms', length: 'S', input: 'mokatei mewa karanne?', expected: 'මොකටෙයි මේවා කරන්නේ?' },
 
   // 2) Command forms
-  { tcId: 'Neg_0003', type: 'Command forms', length: 'S', input: 'dora waha, eliyata yanna epa.', expected: 'දොර වහ, එළියට යන්න එපා.' },
+  { tcId: 'Neg_0003', type: 'Command forms', length: 'S', input: 'dora arala, eliyata yanna epa.', expected: 'දොර ඇරලා, එළියට යන්න එපා.' },
   { tcId: 'Neg_0004', type: 'Command forms', length: 'S', input: 'potha gena enna, patan gamu.', expected: 'පොත ගෙන එන්න, පටන් ගමු.' },
 
   // 3) Greetings
